@@ -3,16 +3,15 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter } from 'react-router-dom';
-// import { Provider } from 'react-redux';
-// import store from './store';
+import CurrencyProvider from './context/CurrencyContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <Provider store={store}> */}
-    <BrowserRouter>
-      <App />
+    <CurrencyProvider>
+      <BrowserRouter>
+        <App />
       </BrowserRouter>
-    {/* </Provider> */}
+    </CurrencyProvider>
   </React.StrictMode>
 );

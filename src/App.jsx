@@ -8,8 +8,7 @@ import { Currencies } from './pages/currencies/Currencies';
 function App() {
   return (
     <Routes>
-      {/* <Route path="/" element={<Home />} /> */}
-      <Route path="/converter" element={<Converter />} />
+      <Route path="/" element={<Converter />} />
       <Route path="/currencies" element={<Currencies />} />
     </Routes>
   );
