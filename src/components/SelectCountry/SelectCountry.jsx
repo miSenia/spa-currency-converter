@@ -1,26 +1,30 @@
-import { useFetch } from "../../hooks/useFetch";
-import { Dropdown } from "react-bootstrap";
 import { useState } from 'react';
- 
-const SelectCountry = (currencies, onSelect) => {
-  //const { value, setValue, label } = props;
-  //const [data, loaded, error] = useFetch("https://restcountries.com/v3.1/all");
+import useAxios from "../../hooks/useAxios";
+import { Dropdown } from "react-bootstrap";//разница между строками
+
+const SelectCountry = (value, setValue, onSelect) => {
+
+  const [data, loaded, error] = useAxios(`https://api.apilayer.com/exchangerates_data/convert?to={to}&from={from}&amount={amount}`, 'CqIeFWTzFIDwXngqoLx43o18yf4UQQ5i');
+
   const [selectedCurrency, setSelectedCurrency] = useState('');
+
   const handleSelect = (eventKey) => {
     setSelectedCurrency(eventKey);
-    onSelect(eventKey);
   }
 
+  console.log(data)
   return (
     <Dropdown onSelect={handleSelect}>
-      <Dropdown.Toggle variant="secondary" id="dropdown-currency">
-        {selectedCurrency ? selectedCurrency : 'Select Currency'}
+      <Dropdown.Toggle variant="outline-secondary" id="dropdown-currency" size="ld">
+        {selectedCurrency ? selectedCurrency : 'Select currency'}
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {currencies.map((currency, index) => (
-          <Dropdown.Item key={index} eventKey={currency}>
-            {currency}
-          </Dropdown.Item>
+        {data.map((country, index) => (
+          Boolean(country.currencies)
+            ? <Dropdown.Item key={index} eventKey={Object.keys(country.currencies)[0]}> 
+              {Object.keys(country.currencies)[0]}
+            </Dropdown.Item>
+            : <></>
         ))}
       </Dropdown.Menu>
     </Dropdown>
@@ -28,3 +32,35 @@ const SelectCountry = (currencies, onSelect) => {
 }
 
 export default SelectCountry;
+
+// const [data, loaded, error] = useAxios("https://restcountries.com/v3.1/all");//loaded, какой может быть error, data - массив объектов!!!
+// // loaded(для отслеживания состояния загрузки данных из api): true - данные загружаются, false - после их получения
+// //error - любая ошибка(Network error, Timeout Error, Request failed with status code 404,Request failed with status code 500, Parsing Error )
+// const [selectedCurrency, setSelectedCurrency] = useState('');
+
+// const handleSelect = (eventKey) => {
+//   setSelectedCurrency(eventKey);
+//   // onSelect(eventKey);
+// }
+
+// console.log(data)
+// return (
+//   <Dropdown onSelect={handleSelect}>
+//     <Dropdown.Toggle variant="outline-secondary" id="dropdown-currency" size="ld">
+//       {selectedCurrency ? selectedCurrency : 'Select currency'}
+//     </Dropdown.Toggle>
+//     <Dropdown.Menu>
+//        {/*проверка на наличие currencies для страны во вр итерации по каждому эл массива*/}
+//       {data.map((country, index) => (
+//         Boolean(country.currencies)
+//           ? <Dropdown.Item key={index} eventKey={Object.keys(country.currencies)[0]}> 
+//             {/* значением eventKey явл первый ключ объекта country.currencies*/}
+//             {Object.keys(country.currencies)[0]}
+//            {/* в качестве текста внутри item */}
+//           </Dropdown.Item>
+//           : <></>
+//       ))}
+//     </Dropdown.Menu>
+//   </Dropdown>
+// )
+// }
