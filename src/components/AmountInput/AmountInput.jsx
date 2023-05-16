@@ -1,18 +1,13 @@
 import React, { useContext } from "react";
 import Form from 'react-bootstrap/Form';
-import { Col, FormGroup, FormControl } from "react-bootstrap";
+import { FormGroup, FormControl } from "react-bootstrap";
 import { CurrencyContext } from "../../context/CurrencyContext";
 
 const AmountInput = () => {
-  const { firstAmount, setFirstAmount, extraValue } = useContext(CurrencyContext);
-
-  // console.log('setFirstAmount', setFirstAmount);
-  console.log('extraValue', extraValue);
+  const { firstAmount, setFirstAmount} = useContext(CurrencyContext);
 
   return (
-    <div className="amount-container">
-      <Col md={3} className="amount-input" style={{padding: "1rem"}}>
-        <Form>
+        <Form className="amount-input">
           <FormGroup>
             <FormControl
               id="amount"
@@ -20,13 +15,11 @@ const AmountInput = () => {
               placeholder="Amount"
               value={firstAmount}
               onChange={e => setFirstAmount(e.target.value)}
-              style={{}}
+              style={{width:"100%"}}
             >
             </FormControl>
           </FormGroup>
         </Form>
-      </Col>
-    </div>
   );
 };
 
