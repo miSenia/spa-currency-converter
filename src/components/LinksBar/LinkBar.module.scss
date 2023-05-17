@@ -1,0 +1,9 @@
+.page_link {
+  text-decoration: none;
+  color: rgba(128, 128, 128, 0.661);
+
+  &__active {
+    text-decoration: none;
+    color: rgb(74, 73, 73);
+  };
+};
