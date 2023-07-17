@@ -1,28 +1,28 @@
-import { useState } from 'react';
-import useAxios from "../../hooks/useAxios";
-import { Dropdown } from "react-bootstrap";//разница между строками
+import { useContext, useState } from 'react';
+import { useConvert, useCurrencies } from "../../hooks/useAxios";
+import { Dropdown } from "react-bootstrap";
 
 const SelectCountry = (value, setValue, onSelect) => {
 
-  const [data, loaded, error] = useAxios(`https://api.apilayer.com/exchangerates_data/convert?to={to}&from={from}&amount={amount}`, 'CqIeFWTzFIDwXngqoLx43o18yf4UQQ5i');
-
-  const [selectedCurrency, setSelectedCurrency] = useState('');
+  const [data, loading, error] = useCurrencies();
+  const data1 = Object.values(data.data || {});
+  const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
   const handleSelect = (eventKey) => {
+    console.log('eventKey', eventKey);
     setSelectedCurrency(eventKey);
   }
 
-  console.log(data)
   return (
     <Dropdown onSelect={handleSelect}>
-      <Dropdown.Toggle variant="outline-secondary" id="dropdown-currency" size="ld">
+      <Dropdown.Toggle variant="outline-secondary" id="dropdown-currency" size="ld" value="USD">
         {selectedCurrency ? selectedCurrency : 'Select currency'}
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {data.map((country, index) => (
-          Boolean(country.currencies)
-            ? <Dropdown.Item key={index} eventKey={Object.keys(country.currencies)[0]}> 
-              {Object.keys(country.currencies)[0]}
+        {data1.map((currency, index) => (
+          Boolean(currency.code)
+            ? <Dropdown.Item key={index} eventKey={currency.code}>
+              {currency.code}
             </Dropdown.Item>
             : <></>
         ))}
@@ -53,7 +53,7 @@ export default SelectCountry;
 //        {/*проверка на наличие currencies для страны во вр итерации по каждому эл массива*/}
 //       {data.map((country, index) => (
 //         Boolean(country.currencies)
-//           ? <Dropdown.Item key={index} eventKey={Object.keys(country.currencies)[0]}> 
+//           ? <Dropdown.Item key={index} eventKey={Object.keys(country.currencies)[0]}>
 //             {/* значением eventKey явл первый ключ объекта country.currencies*/}
 //             {Object.keys(country.currencies)[0]}
 //            {/* в качестве текста внутри item */}
