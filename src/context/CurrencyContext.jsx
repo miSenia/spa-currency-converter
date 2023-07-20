@@ -11,8 +11,8 @@ export const CurrencyContext = createContext({
 });
 
 const CurrencyProvider = ({ children }) => {
-  const [fromCurrency, setFromCurrency] = useState("🇺🇸 USD - United States");
-  const [toCurrency, setToCurrency] = useState("by BYN - Belarus");
+  const [fromCurrency, setFromCurrency] = useState("EUR");
+  const [toCurrency, setToCurrency] = useState("USD");
   const [firstAmount, setFirstAmount] = useState("");
 
   const value = {   // проп value определяет текущее значение ближайшего <CurrencyContext.Provider>
