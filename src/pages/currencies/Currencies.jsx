@@ -1,38 +1,99 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LinkBar from "../../components/LinksBar/LinkBar";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
-import useAxios from "../../hooks/useAxios";
+import { Container, Table, Button } from "react-bootstrap";
+import { useLatest } from "../../hooks/useAxios";
+import './Currencies.module.scss';
 
 const Currencies = () => {
 
-  const [currencies, setCurrencies] = useState([]);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(null);
+  const [data, loading] = useLatest();
 
   const addToFavorites = (currency) => {
-    setFavorites([...favorites, currency]);
+    setFavorites((prevFavorites) => {
+      const newFavorites = [...prevFavorites];
+      newFavorites.unshift(currency);
+      return newFavorites;
+    });
   };
+
+  const removeFromFavorites = (currency) => {
+    setFavorites((prevFavorites) => {
+      return prevFavorites.filter((favCurrency) => favCurrency !== currency);
+    })
+  }
+
+  useEffect(() => {
+    try {
+      const savedFavorites = localStorage.getItem('favorites');
+      setFavorites(JSON.parse(savedFavorites) || []);
+    }
+    catch (err) {
+      console.error("Error parsing favorite currencies from localStorage", err);
+    }
+  }, []);
+
+
+  useEffect(() => {
+    // TODO: может сделать favorites не null
+    if (favorites !== null) {
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+  }, [favorites]);
+
+  const currenciesWithoutFav = Object.keys(data.data || {})
+    .filter((currency) => favorites && !favorites.includes(currency));
+  const sortedCurrencies = (favorites || []).sort().concat(currenciesWithoutFav.sort());
 
 
   return (
     <>
       <h2>Currency Exchange Rates</h2>
-      <Container style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", backgroundColor: "white", width: "50%", boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1)", borderRadius: "1rem", padding: "0" }} >
+      <Container style={{
+        width: "50%",
+        backgroundColor: "white",
+        boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1)",
+        borderRadius: "1rem",
+        padding: "0",
+      }} >
         <LinkBar></LinkBar>
-        <Row>
-          {currencies.map((currency) => {
-            <Col key={currency.code} md={4}>
-            <Card className="mb-3">
-              <Card.Body>
-                <Card.Title>{currency.code}</Card.Title>
-                <Card.Text>
-                  <strong>Rate: </strong> {currency.rate}
-                </Card.Text>
-                <Button class="btn btn-outline"onClick={() => addToFavorites(currency)}><i class="bi bi-heart"></i></Button>
-              </Card.Body>
-            </Card>
-          </Col>
-          })}
-        </Row>
+          <Table striped responsive>
+            <thead>
+              <tr>
+                <th scope="col" class="w-25 text-center">Currency</th>
+                <th scope="col" class="w-50 text-center">Exchange rate</th>
+                <th scope="col" class="w-25 text-center">Favorite</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              {data?.data &&
+                (
+                  sortedCurrencies.map((currency, index) => (
+                    <tr key={index}>
+                      <td className="text-center">{currency}</td>
+                      <td className="text-center">{data.data[currency]}</td>
+                      <td className="text-center">
+                        <Button class="btn btn-outline-primary" onClick={() => {
+                          if (favorites && favorites.includes(currency)) {
+                            removeFromFavorites(currency)
+                          } else {
+                            addToFavorites(currency)
+                          }
+                        }}>
+                          {(() => {
+                            if (favorites && favorites.includes(currency)) {
+                              return <i class="bi bi-heart-fill"></i>
+                            } else {
+                              return <i class="bi bi-heart"></i>
+                            }
+                          })()}
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+            </tbody>
+          </Table>
       </Container>
     </>
   );
