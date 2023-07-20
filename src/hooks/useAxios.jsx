@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useAxios = (url, method = 'GET') => {
+export const useAxios = (url, method = 'GET', query = '') => {
   const [data, setData] = useState({});
   const [error, setError] = useState(null);
   const [loaded, setLoaded] = useState(false);
@@ -11,7 +11,7 @@ export const useAxios = (url, method = 'GET') => {
   useEffect(() => {
     setLoaded(true);
     fetch(
-      `https://api.freecurrencyapi.com/v1/${url}`,
+      `https://api.freecurrencyapi.com/v1/${url}${query}`,
       {
         method,
         redirect: 'follow',
@@ -22,7 +22,7 @@ export const useAxios = (url, method = 'GET') => {
       .then(res => setData(res))
       .catch(error => setError(error))
       .finally(setLoaded(false));
-  }, [url, method]);
+  }, [url, method, query]);
 
   return [data, error, loaded];
 };
@@ -31,8 +31,8 @@ export const useCurrencies = () => {
   return useAxios('currencies')
 };
 
-export const useLatest = () => {
-  return useAxios('latest')
+export const useLatest = (fromCurrency) => {
+  return useAxios('latest', 'GET', fromCurrency ? `?base_currency=${fromCurrency}` : '')
 };
 
 // export const useSymbols = () => {
