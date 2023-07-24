@@ -1,6 +1,7 @@
 import { useLatest } from "../../hooks/useAxios";
 import { Dropdown } from "react-bootstrap";
-
+import styles from './SelectCountry.module.scss';
+  
 const SelectCountry = (props) => {
 
   const { value, setValue, onSelect } = props;
@@ -13,8 +14,8 @@ const SelectCountry = (props) => {
 
   return (
     { loading }
-      ? <Dropdown onSelect={handleSelect}>
-        <Dropdown.Toggle variant="outline-secondary" id="dropdown-currency" size="ld" value="USD">
+      ? <Dropdown onSelect={handleSelect} className={styles.dropdown_container}>
+        <Dropdown.Toggle variant="outline-secondary" id="dropdown-currency" size="ld" value="USD" style={{width:"100%"}}>
           {value ? value : 'Select currency'}
         </Dropdown.Toggle>
         <Dropdown.Menu>

@@ -15,15 +15,8 @@ const LinkBar = () => {
     )
   }
 
-  // TODO: избавится от inline-стилей
   return (
-    <Row className="links-container" style={{
-      textAlign: "center",
-      borderBottom: "1px",
-      borderBottomColor: "grey",
-      paddingTop: "2rem",
-      paddingBottom: "2rem"
-    }}>
+    <Row className={styles.links_container}>
       <Col className="col-converter-link" md={6}>
         <Link to="/" className={classForLink('/')}>
           <i class="bi bi-currency-exchange" style={{ padding: "4px" }}></i>

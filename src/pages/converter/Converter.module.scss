@@ -1,0 +1,33 @@
+@import '../../styles/vars.scss';
+
+.converter_container {
+  background-color: white;
+  width: 50% !important; 
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  padding: 0;
+}
+
+.currency_container {
+  padding: 2rem;
+  padding-top: 0rem;
+  margin: 0rem;
+  justify-content: center;
+
+
+  .amount_input {
+    @media (max-width: $media-size-m) {
+      width: 100%;
+      padding: 0.5rem;
+    }
+  }
+
+  &__input {
+    @media (max-width: $media-size-m) {
+      flex-direction: column;
+      padding-bottom: 1rem;
+    }
+
+    
+  }
+}

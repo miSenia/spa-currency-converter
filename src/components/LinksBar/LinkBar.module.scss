@@ -1,3 +1,11 @@
+.links_container{
+  text-align: center;
+  border-bottom: 1px;
+  border-bottom-color: grey;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
 .page_link {
   text-decoration: none;
   color: rgba(128, 128, 128, 0.661);
@@ -7,3 +15,7 @@
     color: rgb(74, 73, 73);
   };
 };
+ 
+.icons{
+  padding: 4px;
+}

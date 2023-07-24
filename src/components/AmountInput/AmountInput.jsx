@@ -7,7 +7,7 @@ const AmountInput = () => {
   const { firstAmount, setFirstAmount} = useContext(CurrencyContext);
 
   return (
-        <Form className="amount-input">
+    <Form>
           <FormGroup>
             <FormControl
               id="amount"
@@ -15,7 +15,6 @@ const AmountInput = () => {
               placeholder="Amount"
               value={firstAmount}
               onChange={e => setFirstAmount(e.target.value)}
-              style={{width:"100%"}}
             >
             </FormControl>
           </FormGroup>

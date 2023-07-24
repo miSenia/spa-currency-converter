@@ -1,0 +1,9 @@
+@import '../../styles/vars.scss';
+
+.dropdown_container {
+  @media (max-width: $media-size-m) {
+    width:100%;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+  }
+}
